@@ -63,8 +63,8 @@ def blackjack():
     members[username][3] = chips
     members[username] = tuple(members[username])
     store_members(members)
-    print("You played", tries - temp[1], "games and won", wins - temp[2],"of them.")
-    print("Your winning percentage today is", "{0:.1f}".format((tries - temp[2])/(tries - temp[1])*100), "%")
+    print("You played", tries - temp[1], "games and won", int(wins - temp[2]),"of them.")
+    print("Your winning percentage today is", "{0:.1f}".format((wins - int(temp[2]))/(tries - int(temp[1]))*100), "%")
     print("Bye!")
     show_top5(members)
 
@@ -78,7 +78,7 @@ def login(members):
             tries = members[username][1]
             wins = members[username][2]
             chips = members[username][3]
-            print('You played', tries, 'games and won', wins, 'of them.')
+            print('You played', tries, 'games and won', int(wins), 'of them.')
             if tries != 0:
                 print('Your all-time winning percentage is', "{0:.1f}".format(wins/tries*100) , '%')
             if chips > 0:

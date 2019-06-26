@@ -69,25 +69,6 @@ def blackjack():
     print("Bye!")
     show_top5(members)
 
-def load_members():
-    file = open("members.txt","r")
-    members = {}
-    for line in file:
-        name, passwd, tries, wins, chips = line.strip('\n').split(',')
-        members[name] = (passwd,int(tries),float(wins),int(chips))
-    file.close()
-    return members
-
-def store_members(members):
-    file = open("members.txt","w")
-    names = members.keys()
-    for name in names:
-        passwd, tries, wins, chips = members[name]
-        line = name + ',' + passwd + ',' + \
-               str(tries) + ',' + str(wins) + "," + str(chips) + '\n'              
-        file.write(line)
-    file.close()
-
 def login(members):
     username = input("Enter your name: (4 letters max) ")
     while len(username) > 4:
@@ -112,6 +93,25 @@ def login(members):
         members[username] = (trypasswd,0,0,0)
         return username, 0, 0, 0, members
 
+def load_members():
+    file = open("members.txt","r")
+    members = {}
+    for line in file:
+        name, passwd, tries, wins, chips = line.strip('\n').split(',')
+        members[name] = (passwd,int(tries),float(wins),int(chips))
+    file.close()
+    return members
+
+def store_members(members):
+    file = open("members.txt","w")
+    names = members.keys()
+    for name in names:
+        passwd, tries, wins, chips = members[name]
+        line = name + ',' + passwd + ',' + \
+               str(tries) + ',' + str(wins) + "," + str(chips) + '\n'              
+        file.write(line)
+    file.close()
+
 def show_top5(members):
     print("-----")
     sorted_members = sorted(members.items(),key=lambda x: x[1][3],reverse=True)
@@ -121,6 +121,19 @@ def show_top5(members):
             print(i+1, '.', sorted_members[i][0], ':', sorted_members[i][1][3])
         else:
             continue
+
+def fresh_deck():
+    import random
+    suits = {"Spade", "Heart", "Diamond", "Club"}
+    ranks = {"A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"}
+    deck = []
+    li_su = list(suits)
+    li_ra = list(ranks)
+    for i in range(len(suits)):
+        for j in range(len(ranks)):
+            deck.append({"suit": li_su[i], "rank": li_ra[j]})
+    random.shuffle(deck)
+    return deck
 
 def hit(deck):
     if deck == []:
@@ -147,26 +160,13 @@ def count_score(cards):
         score -= 10
     return score
 
-def fresh_deck():
-    import random
-    suits = {"Spade", "Heart", "Diamond", "Club"}
-    ranks = {"A", 2, 3, 4, 5, 6, 7, 8, 9, 10, "J", "Q", "K"}
-    deck = []
-    li_su = list(suits)
-    li_ra = list(ranks)
-    for i in range(len(suits)):
-        for j in range(len(ranks)):
-            deck.append({"suit": li_su[i], "rank": li_ra[j]})
-    random.shuffle(deck)
-    return deck
+def show_cards(cards,message):
+    print(message)
+    for card in cards:
+        print(" ", card.get("suit"), card.get("rank"))
 
 def more(message):
     answer = input(message)
     while not answer == 'y' and answer != 'n':
         answer = input(message)
     return answer == 'y'
-
-def show_cards(cards,message):
-    print(message)
-    for card in cards:
-        print(" ", card.get("suit"), card.get("rank"))
